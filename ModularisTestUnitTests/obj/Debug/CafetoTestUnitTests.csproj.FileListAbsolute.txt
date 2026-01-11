@@ -1,0 +1,17 @@
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTest.TestAdapter.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.Interface.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.MSTestAdapter.PlatformServices.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\CafetoTestUnitTests.dll.config
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\CafetoTestUnitTests.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\CafetoTestUnitTests.pdb
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\CafetoTest.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\CafetoTest.pdb
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.xml
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\bin\Debug\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.xml
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\obj\Debug\CafetoTestUnitTests.csprojAssemblyReference.cache
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\obj\Debug\CafetoTestUnitTests.csproj.CoreCompileInputs.cache
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\obj\Debug\CafetoTestUnitTests.csproj.CopyComplete
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\obj\Debug\CafetoTestUnitTests.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTestUnitTests\obj\Debug\CafetoTestUnitTests.pdb

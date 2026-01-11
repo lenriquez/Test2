@@ -1,0 +1,5 @@
+C:\Users\developer\Desktop\Cafeto\CafetoTest\bin\Debug\CafetoTest.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTest\bin\Debug\CafetoTest.pdb
+C:\Users\developer\Desktop\Cafeto\CafetoTest\obj\Debug\CafetoTest.csproj.CoreCompileInputs.cache
+C:\Users\developer\Desktop\Cafeto\CafetoTest\obj\Debug\CafetoTest.dll
+C:\Users\developer\Desktop\Cafeto\CafetoTest\obj\Debug\CafetoTest.pdb
