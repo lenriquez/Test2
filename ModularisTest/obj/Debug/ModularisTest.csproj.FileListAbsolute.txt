@@ -1,5 +1,0 @@
-D:\Modularis\Pruebas\Source\Logger Test\ModularisTest\bin\Debug\ModularisTest.dll
-D:\Modularis\Pruebas\Source\Logger Test\ModularisTest\bin\Debug\ModularisTest.pdb
-D:\Modularis\Pruebas\Source\Logger Test\ModularisTest\obj\Debug\ModularisTest.csproj.CoreCompileInputs.cache
-D:\Modularis\Pruebas\Source\Logger Test\ModularisTest\obj\Debug\ModularisTest.dll
-D:\Modularis\Pruebas\Source\Logger Test\ModularisTest\obj\Debug\ModularisTest.pdb
