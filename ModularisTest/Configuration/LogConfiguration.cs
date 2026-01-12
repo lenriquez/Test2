@@ -1,7 +1,9 @@
 using ModularisTest.Enums;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 
 namespace ModularisTest.Configuration
 {
@@ -11,7 +13,32 @@ namespace ModularisTest.Configuration
 
         public LogConfiguration()
         {
-            _configSection = ConfigurationManager.GetSection("logging") as LogConfigurationSection;
+            // Try multiple approaches to load configuration in .NET 6
+            try
+            {
+                // First, try the standard method
+                _configSection = ConfigurationManager.GetSection("logging") as LogConfigurationSection;
+                
+                if (_configSection == null)
+                {
+                    // Try opening exe configuration explicitly
+                    var assemblyLocation = Assembly.GetExecutingAssembly().Location;
+                    var configPath = assemblyLocation + ".config";
+                    
+                    if (File.Exists(configPath))
+                    {
+                        var fileMap = new ExeConfigurationFileMap { ExeConfigFilename = configPath };
+                        var config = ConfigurationManager.OpenMappedExeConfiguration(fileMap, ConfigurationUserLevel.None);
+                        _configSection = config.GetSection("logging") as LogConfigurationSection;
+                    }
+                }
+            }
+            catch
+            {
+                // Final fallback
+                _configSection = ConfigurationManager.GetSection("logging") as LogConfigurationSection;
+            }
+
             if (_configSection == null)
             {
                 throw new ConfigurationErrorsException("Logging configuration section not found in App.config");
