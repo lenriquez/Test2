@@ -1,120 +1,113 @@
-﻿using ModularisTest.Exceptions;
+﻿using ModularisTest.Destinations;
+using ModularisTest.Enums;
+using ModularisTest.Exceptions;
+using ModularisTest.Interfaces;
 using System;
-using System.Configuration;
-using System.IO;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace ModularisTest
 {
     public class JobLogger
     {
-        private static bool _logToFile;
-        private static bool _logToConsole;
+        private static readonly object _lock = new object();
+        private static JobLogger _instance;
 
-        private static bool _logMessageType;
-        private static bool _logWarningType;
-        private static bool _logErrorType;
+        private readonly IEnumerable<ILogDestination> _destinations;
+        private readonly HashSet<LogMessageType> _enabledMessageTypes;
+        private bool _initialized;
 
-        private static bool _initialized;
-
-        public JobLogger(bool logToFile, bool logToConsole, bool logMessageType, bool logWarningType, bool logErrorType)
+        private JobLogger(IEnumerable<ILogDestination> destinations, IEnumerable<LogMessageType> enabledMessageTypes)
         {
-            _logErrorType = logErrorType;
-            _logMessageType = logMessageType;
-            _logWarningType = logWarningType;
+            if (destinations == null || !destinations.Any())
+            {
+                throw new ArgumentException("At least one logging destination must be configured.", nameof(destinations));
+            }
 
-            _logToFile = logToFile;
-            _logToConsole = logToConsole;
+            if (enabledMessageTypes == null || !enabledMessageTypes.Any())
+            {
+                throw new ArgumentException("At least one message type must be enabled.", nameof(enabledMessageTypes));
+            }
+
+            _destinations = destinations;
+            _enabledMessageTypes = new HashSet<LogMessageType>(enabledMessageTypes);
             _initialized = true;
         }
 
-        public static void LogMessage(string message, bool messageType, bool warningType, bool errorType)
+        public static JobLogger Instance
         {
+            get
+            {
+                if (_instance == null)
+                {
+                    throw new JobLoggerNotInitializedException();
+                }
+                return _instance;
+            }
+        }
 
-            if (!_initialized) throw new JobLoggerNotInitializedException();
+        public static void Initialize(IEnumerable<ILogDestination> destinations, IEnumerable<LogMessageType> enabledMessageTypes)
+        {
+            if (_instance != null)
+            {
+                throw new InvalidOperationException("JobLogger has already been initialized.");
+            }
 
-            message.Trim();
+            lock (_lock)
+            {
+                if (_instance == null)
+                {
+                    _instance = new JobLogger(destinations, enabledMessageTypes);
+                }
+            }
+        }
 
-            if (message == null || message.Length == 0)
+        public void LogMessage(string message, LogMessageType messageType)
+        {
+            if (!_initialized)
+            {
+                throw new JobLoggerNotInitializedException();
+            }
+
+            if (string.IsNullOrWhiteSpace(message))
             {
                 return;
             }
 
-            if (!_logToConsole && !_logToFile)
+            var trimmedMessage = message.Trim();
+            if (string.IsNullOrEmpty(trimmedMessage))
             {
-                throw new Exception("Invalid configuration");
+                return;
             }
 
-            if ((!_logErrorType && !_logMessageType && !_logWarningType) || (!messageType && !warningType && !errorType))
+            if (!_enabledMessageTypes.Contains(messageType))
             {
-                throw new Exception("Error or Warning or Message must be specified");
+                throw new ArgumentException($"Message type '{messageType}' is not enabled in the configuration.", nameof(messageType));
             }
 
-            int t;
-
-            if (messageType && _logMessageType)
+            foreach (var destination in _destinations)
             {
-                t = 1;
+                try
+                {
+                    destination.LogMessage(trimmedMessage, messageType);
+                }
+                catch (Exception ex)
+                {
+                    // Log error to console if available, but don't fail the entire logging operation
+                    var consoleDestination = _destinations.OfType<ConsoleLogDestination>().FirstOrDefault();
+                    if (consoleDestination != null)
+                    {
+                        try
+                        {
+                            consoleDestination.LogMessage($"Failed to log to destination: {ex.Message}", LogMessageType.Error);
+                        }
+                        catch
+                        {
+                            // If even console logging fails, we can't do anything
+                        }
+                    }
+                }
             }
-
-            if (errorType && _logErrorType)
-            {
-                t = 2;
-            }
-
-            if (warningType && _logWarningType)
-            {
-                t = 3;
-            }
-
-            string l = string.Empty;
-
-            var logFolder = ConfigurationManager.AppSettings["LogFileDirectory"];
-            if (string.IsNullOrEmpty(logFolder)) logFolder = Environment.CurrentDirectory;
-            var logFileName = "LogFile" + DateTime.Now.ToShortDateString().Replace("/", ".") + ".txt";
-            var logFullFilePath = Path.Combine(logFolder, logFileName);
-
-            if (File.Exists(logFullFilePath))
-            {
-                l = File.ReadAllText(logFullFilePath);
-
-            }
-
-            if (errorType && _logErrorType)
-            {
-                l = l + DateTime.Now.ToShortDateString() + " Error   " + message + Environment.NewLine;
-            }
-
-            if (warningType && _logWarningType)
-            {
-                l = l + DateTime.Now.ToShortDateString() + " Warning " + message + Environment.NewLine;
-            }
-
-            if (messageType && _logMessageType)
-            {
-                l = l + DateTime.Now.ToShortDateString() + " Message " + message + Environment.NewLine;
-            }
-
-
-            if (!Directory.Exists(logFolder)) Directory.CreateDirectory(logFolder);
-
-            System.IO.File.WriteAllText(logFullFilePath, l);
-
-            if (errorType && _logErrorType)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
-            }
-
-            if (warningType && _logWarningType)
-            {
-                Console.ForegroundColor = ConsoleColor.Yellow;
-            }
-
-            if (messageType && _logMessageType)
-            {
-                Console.ForegroundColor = ConsoleColor.White;
-            }
-
-            Console.WriteLine(DateTime.Now.ToShortDateString() + message);
         }
     }
 }
