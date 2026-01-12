@@ -13,6 +13,9 @@ A flexible, extensible logging system for .NET 6 applications that supports mult
 
 ## Architecture
 
+<img width="626" height="363" alt="image" src="https://github.com/user-attachments/assets/bfc05714-811c-45ff-92dd-41eaa6142a5e" />
+
+
 ### Design Patterns
 
 - **Singleton Pattern**: `JobLogger` provides a single instance for application-wide logging
