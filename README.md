@@ -145,18 +145,6 @@ JobLogger.Instance.LogMessage("This is an error", LogMessageType.Error);
   - **Yellow**: Warning messages
   - **White**: Regular messages
 
-**Database Logging**
-- Requires SQL Server database
-- Table structure:
-  ```sql
-  CREATE TABLE Log (
-      Message NVARCHAR(MAX),
-      Type INT,
-      Date DATETIME
-  )
-  ```
-- Connection string must be provided in configuration
-
 ## Running Tests
 
 Run all tests:
@@ -204,12 +192,3 @@ To add a new logging destination:
 
 - **Microsoft.Extensions.DependencyInjection** (8.0.0) - Dependency injection container
 - **System.Configuration.ConfigurationManager** (8.0.0) - Configuration file support
-- **Microsoft.Data.SqlClient** (5.1.5) - SQL Server database connectivity
-
-## License
-
-[Specify your license here]
-
-## Contributing
-
-[Add contribution guidelines if applicable]
